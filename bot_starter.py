@@ -104,9 +104,6 @@ def receive_messages():
             elif "USERNOTICE" in line:
                 print(line)
 
-
-
-
 # Start both threads
 import threading
 receive_thread = threading.Thread(target=receive_messages)
