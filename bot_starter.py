@@ -7,11 +7,12 @@ import time
 import sys
 from Global_Vars import MESSAGECOUNT, commandsfile, ucommands,s
 from Creds import NICK, CHAN, PASS
-from functions import auto_anouncments, send_message, respond_to_chat_messages, add_cmd, del_cmd, update_cmd, ask_openai, twitch_connect
+from functions import auto_anouncments, send_message, respond_to_chat_messages, add_cmd, del_cmd, update_cmd,add_auto, ask_openai, twitch_connect
 
 with open(commandsfile, "r") as file:
     lines = file.readlines()
     for line in lines:
+     print(line)
      words = line.strip().split()
      text = " ".join(words[1:])
      ucommands[words[0]] = text
@@ -23,6 +24,7 @@ twitch_connect()
 # Receive messages from Twitch IRC
 def receive_messages():
     buffer = ""
+    import Global_Vars 
     while True:
         buffer += s.recv(1024).decode("utf-8")
         lines = buffer.split("\r\n")
@@ -72,7 +74,7 @@ def receive_messages():
                     send_message(username+" "+reply.strip('\n\n'))
                 
                 if "!msgcount" in message.lower().split():
-                    send_message("There have been "+str(MESSAGECOUNT)+" messages sent in chat since my last restart")
+                    send_message("There have been "+str(Global_Vars.MESSAGECOUNT)+" messages sent in chat since my last restart")
 
                 if "!lurk" in message.lower().split():
                     send_message("I appreciate you "+username+", enjoy the lurk!")
@@ -96,10 +98,13 @@ def receive_messages():
                     keys = list(ucommands.keys())
                     keys_stirng =", ".join(keys)
                     send_message("the following commands exist: "+keys_stirng)
+                
+                if "!addauto" in message.lower().split() and tags_dict['mod'] == '1':
+                    add_auto(message)
                     
                 print(f"{Mod}{username}: {message}")
-                               
-                MESSAGECOUNT = MESSAGECOUNT + 1
+                              
+                Global_Vars.MESSAGECOUNT = Global_Vars.MESSAGECOUNT + 1
 
             elif "USERNOTICE" in line:
                 print(line)

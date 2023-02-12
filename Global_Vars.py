@@ -15,7 +15,5 @@ PORT = 6667
 
 #global vars
 MESSAGECOUNT = 0 #Messages since the bot last restarted, used in auto messages and !msgcount command
-message_counter = 0 #used in send_messsage for rate limiting
-start_time =time.time() #used in send_messsage for rate limiting
 ucommands = {} # starting point for user added commands
-commandsfile = "./ucommands.txt" # file we saves user created commands too
+commandsfile = "ucommands.txt" # file we saves user created commands too
